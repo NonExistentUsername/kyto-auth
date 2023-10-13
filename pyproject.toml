@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "kyto-base-service"
+version = "0.1.0"
+description = ""
+authors = ["Name Surname <author@example.com>"]
+readme = "README.md"
+packages = [
+    {include = "*", from = "src"},
+    {include = "*", from = "tests"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ruff = "^0.0.292"
+pre-commit = "^3.5.0"
+pytest = "^7.4.2"
+
+[tool.ruff]
+select = ["E", "F", "B", "W"]
+ignore = []
+fixable = ["ALL"]
+unfixable = []
+line-length = 88
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
