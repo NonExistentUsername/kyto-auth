@@ -1,5 +1,7 @@
 from uuid import uuid4
 
+from service_player import exceptions
+
 
 class Command:
     """

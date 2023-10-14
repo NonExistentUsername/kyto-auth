@@ -16,18 +16,20 @@ class AbstractUnitOfWork(abc.ABC):
     Abstract class for Unit of Work
     """
 
+    users: repository.AbstractRepository
+
     def __init__(
         self,
-        repositories: Dict[str, repository.AbstractRepository],
+        users: repository.AbstractRepository,
     ):
         """
         Initialize Unit of Work
 
         Args:
-            repositories (Dict[str, repository.AbstractRepository]): Repositories
+            repositories (repository.AbstractRepository): Users repository
         """
 
-        self._repositories = repositories
+        self.users = users
 
     def __enter__(self) -> AbstractUnitOfWork:
         """
@@ -61,34 +63,10 @@ class AbstractUnitOfWork(abc.ABC):
             Event: New event
         """
 
-        for _repository in self._repositories.values():
-            for instance in _repository.seen:
-                if hasattr(instance, "events") and isinstance(instance.events, list):
-                    while instance.events:
-                        yield instance.events.pop(0)
-
-    def __getattribute__(self, __name: str) -> Any:
-        """
-        Get attribute from Unit of Work
-
-        Args:
-            __name (str): Attribute name
-
-        Returns:
-            Any: Attribute value
-        """
-
-        try:
-            return super().__getattribute__(__name)
-        except AttributeError:
-            pass
-
-        repository = self._repositories.get(__name)
-
-        if repository is not None:
-            return repository
-
-        raise AttributeError(f"Attribute {__name} not found in Unit of Work")
+        for instance in self.users.seen:
+            if hasattr(instance, "events") and isinstance(instance.events, list):
+                while instance.events:
+                    yield instance.events.pop(0)
 
     @abc.abstractmethod
     def _commit(self):
@@ -113,40 +91,40 @@ class AbstractUnitOfWork(abc.ABC):
         raise NotImplementedError
 
 
-class RamUnitOfWork(AbstractUnitOfWork):
+class InMemoryUnitOfWork(AbstractUnitOfWork):
     """
     Unit of Work that stores all changes in RAM
     """
 
     def __init__(
         self,
-        repositories: Dict[str, repository.AbstractRepository],
+        users: repository.AbstractRepository,
     ):
         """
-        Initialize RamUnitOfWork
+        Initialize InMemoryUnitOfWork
 
         Args:
-            repositories (Dict[str, repository.AbstractRepository]): Repositories
+            users (repository.AbstractRepository): Users repository
         """
 
-        super().__init__(repositories)
+        super().__init__(users)
 
-        self._last_committed_repositories = deepcopy(repositories)
+        self._last_committed_users = deepcopy(users)
 
     def _commit(self):
         """
         Commit all changes made in this unit of work
         """
 
-        logger.debug("Commiting changes in RamUnitOfWork")
+        logger.debug("Commiting changes in InMemoryUnitOfWork")
 
-        self._last_committed_repositories = deepcopy(self._repositories)
+        self._last_committed_users = deepcopy(self.users)
 
     def rollback(self):
         """
         Rollback all changes made in this unit of work
         """
 
-        logger.debug("Rolling back changes in RamUnitOfWork")
+        logger.debug("Rolling back changes in InMemoryUnitOfWork")
 
-        self._repositories = deepcopy(self._last_committed_repositories)
+        self.users = deepcopy(self._last_committed_users)

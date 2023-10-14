@@ -28,3 +28,11 @@ class InvalidEmail(InternalException):
     """
 
     pass
+
+
+class InvalidPassword(InternalException):
+    """
+    Raised when password is invalid.
+    """
+
+    pass

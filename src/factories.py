@@ -1,8 +1,18 @@
 from typing import Callable, List
 
 import di
+from adapters import repository
 from domain import commands, events
 from service_player import handlers, messagebus, unit_of_work
+
+
+def create_uow(uow_type: str) -> unit_of_work.AbstractUnitOfWork:
+    if uow_type == "ram":
+        return unit_of_work.InMemoryUnitOfWork(
+            repository.InMemoryRepository(query_fields=["id", "username"]),
+        )
+
+    raise ValueError(f"Unknown uow_type: {uow_type}")
 
 
 def create_message_bus(

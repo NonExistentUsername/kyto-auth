@@ -26,6 +26,7 @@ router = APIRouter(
 @router.post("/", response_model=Response, status_code=status.HTTP_201_CREATED)
 async def register(
     username: str,
+    email: str,
     password: str,
     message_bus: Annotated[messagebus.MessageBus, Depends(get_message_bus)],
 ) -> Union[JSONResponse, Response]:
@@ -36,7 +37,7 @@ async def register(
     """
     try:
         async_result: multiprocessing.pool.ApplyResult = message_bus.handle(
-            commands.CreateUser(username=username, password=password)
+            commands.CreateUser(username=username, email=email, password=password)
         )
         user: users.User = async_result.get()
 
@@ -63,6 +64,11 @@ async def register(
             exception=e,
         )
     except exceptions.InvalidEmail as e:
+        return responses.get_error_respose(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            exception=e,
+        )
+    except exceptions.InvalidPassword as e:
         return responses.get_error_respose(
             status_code=status.HTTP_400_BAD_REQUEST,
             exception=e,

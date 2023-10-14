@@ -1,6 +1,7 @@
 import contextlib
 
 import pytest
+
 from adapters import repository
 from service_player import unit_of_work
 
@@ -26,39 +27,37 @@ class SampleObject:
 
 @pytest.fixture
 def uow() -> unit_of_work.AbstractUnitOfWork:
-    return unit_of_work.RamUnitOfWork(
-        repositories={
-            "objects": repository.RamRepository(query_fields=["id"]),
-        }
+    return unit_of_work.InMemoryUnitOfWork(
+        users=repository.InMemoryRepository(query_fields=["id"]),
     )
 
 
 class TestRamUOWCreation:
     def test_works(self, uow: unit_of_work.AbstractUnitOfWork):
         with uow:
-            uow.objects.add(SampleObject(id="123", name="test"))
+            uow.users.add(SampleObject(id="123", name="test"))
             uow.commit()
 
-        assert uow.objects.get(id="123") == SampleObject(id="123", name="test")
+        assert uow.users.get(id="123") == SampleObject(id="123", name="test")
 
         with uow:
-            instance = uow.objects.delete(id="123")
+            instance = uow.users.delete(id="123")
             uow.commit()
 
             assert instance == SampleObject(id="123", name="test")
 
-        assert uow.objects.get(id="123") is None
+        assert uow.users.get(id="123") is None
 
     def test_rolls_back(self, uow: unit_of_work.AbstractUnitOfWork):
         with uow:
-            uow.objects.add(SampleObject(id="123", name="test"))
+            uow.users.add(SampleObject(id="123", name="test"))
 
-        assert uow.objects.get(id="123") is None
+        assert uow.users.get(id="123") is None
 
     def test_rolls_back_if_exception(self, uow: unit_of_work.AbstractUnitOfWork):
         with contextlib.suppress(Exception):
             with uow:
-                uow.objects.add(SampleObject(id="123", name="test"))
+                uow.users.add(SampleObject(id="123", name="test"))
                 raise Exception()
 
-        assert uow.objects.get(id="123") is None
+        assert uow.users.get(id="123") is None

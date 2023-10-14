@@ -52,7 +52,7 @@ class AbstractRepository(abc.ABC, Generic[_T]):
 
         return instance
 
-    def delete(self, **kwargs) -> None:
+    def delete(self, **kwargs) -> Optional[_T]:
         instance: Optional[_T] = self._delete(**kwargs)
 
         if instance:
@@ -103,7 +103,7 @@ class AbstractRepository(abc.ABC, Generic[_T]):
         raise NotImplementedError
 
 
-class RamRepository(AbstractRepository[_T]):
+class InMemoryRepository(AbstractRepository[_T]):
     """
     In-memory repository implementation that stores instances of a given type \
 in a dictionary-like structure.
@@ -116,7 +116,7 @@ their corresponding values.
         query_fields: Optional[List[str]] = None,
     ):
         """
-        Initializes a new instance of the RamRepository class.
+        Initializes a new instance of the InMemoryRepository class.
 
         Args:
             fields (Optional[List[str]], optional): Fields to query by. \
@@ -133,17 +133,18 @@ for fields. Defaults to None.
             if field not in self._storages:
                 self._storages[field] = {}
 
-    def copy(self) -> RamRepository[_T]:
+    def copy(self) -> InMemoryRepository[_T]:
         """
         Copy repository
 
         Returns:
-            RamRepository: Copy of repository
+            InMemoryRepository: Copy of repository
         """
 
-        fields = self._query_fields.copy()
+        query_fields = self._query_fields.copy()
         storages = deepcopy(self._storages)
-        repository = RamRepository(fields, storages)
+        repository: InMemoryRepository = InMemoryRepository(query_fields=query_fields)
+        repository._storages = storages
         repository.seen = self.seen.copy()
         return repository
 
