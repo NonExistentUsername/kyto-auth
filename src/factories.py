@@ -9,7 +9,7 @@ from service_player import handlers, messagebus, unit_of_work
 def create_uow(uow_type: str) -> unit_of_work.AbstractUnitOfWork:
     if uow_type == "ram":
         return unit_of_work.InMemoryUnitOfWork(
-            repository.InMemoryRepository(query_fields=["id", "username"]),
+            repository.InMemoryRepository(query_fields=["id", "username", "email"])
         )
 
     raise ValueError(f"Unknown uow_type: {uow_type}")
