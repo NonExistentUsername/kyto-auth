@@ -1,4 +1,4 @@
-FROM python:3.11.4-slim-buster as base
+FROM python:3.11.4-alpine as base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONFAULTHANDLER=1 \
@@ -21,10 +21,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DEFAULT_TIMEOUT=100
 
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml ./
 COPY src ./src
 
-RUN touch README.md \
+RUN apk add gcc musl-dev libffi-dev \
+    && touch README.md \
     && pip install "poetry==1.6.1" --no-cache-dir \
     && poetry config virtualenvs.create false \
     && poetry build -f wheel
