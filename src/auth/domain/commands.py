@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from service_player import exceptions
+from auth.service_player import exceptions
 
 
 class Command:

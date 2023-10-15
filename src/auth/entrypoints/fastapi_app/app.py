@@ -11,11 +11,11 @@ def create_app() -> FastAPI:
     """
     import logging
 
-    from entrypoints.fastapi_app.exception_handlers import (
+    from auth.entrypoints.fastapi_app.exception_handlers import (
         rewrite_404_exception,
         rewrite_500_exception,
     )
-    from entrypoints.fastapi_app.v1.routers import router as api_v1_router
+    from auth.entrypoints.fastapi_app.v1.routers import router as api_v1_router
 
     logging.basicConfig(level=logging.DEBUG)
 
@@ -28,9 +28,9 @@ def create_app() -> FastAPI:
     return app
 
 
+app = create_app()
+
 if __name__ == "__main__":
     import uvicorn
-
-    app = create_app()
 
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="debug")

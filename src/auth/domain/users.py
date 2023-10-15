@@ -2,10 +2,10 @@ from typing import TYPE_CHECKING, Any
 
 from passlib.hash import argon2
 
-from domain.base import BaseModel
+from auth.domain.base import BaseModel
 
 if TYPE_CHECKING:
-    from domain.events import Event
+    from auth.domain.events import Event
 
 
 class User(BaseModel):

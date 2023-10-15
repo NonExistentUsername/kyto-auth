@@ -2,8 +2,8 @@ from typing import Dict
 
 from fastapi.testclient import TestClient
 
-import config
-from entrypoints.fastapi_app.app import create_app
+from auth import config
+from auth.entrypoints.fastapi_app.app import create_app
 
 _client = TestClient(create_app())
 

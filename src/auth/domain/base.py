@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from domain.events import Event
+    from auth.domain.events import Event
 
 
 class BaseModel:

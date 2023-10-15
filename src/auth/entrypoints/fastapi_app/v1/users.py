@@ -5,15 +5,15 @@ from typing import Annotated, Union
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
-from domain import commands, users
-from entrypoints.fastapi_app import responses
-from entrypoints.fastapi_app.deps import get_message_bus
-from entrypoints.fastapi_app.responses import (
+from auth.domain import commands, users
+from auth.entrypoints.fastapi_app import responses
+from auth.entrypoints.fastapi_app.deps import get_message_bus
+from auth.entrypoints.fastapi_app.responses import (
     ErrorResponse,
     InternalErrorResponse,
     Response,
 )
-from service_player import exceptions, messagebus
+from auth.service_player import exceptions, messagebus
 
 logger = logging.getLogger(__name__)
 

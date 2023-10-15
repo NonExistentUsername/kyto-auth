@@ -1,12 +1,11 @@
 [tool.poetry]
-name = "kyto-base-service"
+name = "auth"
 version = "0.1.0"
 description = ""
 authors = ["Name Surname <author@example.com>"]
 readme = "README.md"
 packages = [
-    {include = "*", from = "src"},
-    {include = "*", from = "tests"},
+    {include = "auth", from = "src/"}
 ]
 
 [tool.poetry.dependencies]
@@ -15,6 +14,7 @@ fastapi = "^0.103.2"
 uvicorn = {extras = ["standart"], version = "^0.23.2"}
 passlib = {extras = ["argon2"], version = "^1.7.4"}
 email-validator = "^2.0.0.post2"
+gunicorn = "^21.2.0"
 
 [tool.isort]
 profile = "black"

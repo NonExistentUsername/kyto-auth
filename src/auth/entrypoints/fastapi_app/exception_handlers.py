@@ -2,7 +2,7 @@ from fastapi import Request, status
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 
-from entrypoints.fastapi_app.responses import Response
+from auth.entrypoints.fastapi_app.responses import Response
 
 
 def rewrite_404_exception(request: Request, exc: HTTPException) -> JSONResponse:

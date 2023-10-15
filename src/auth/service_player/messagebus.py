@@ -4,8 +4,8 @@ import logging
 import multiprocessing.pool
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Union
 
-from domain import commands, events
-from service_player import exceptions
+from auth.domain import commands, events
+from auth.service_player import exceptions
 
 if TYPE_CHECKING:
     from . import unit_of_work
@@ -125,7 +125,7 @@ to use for handling messages. Defaults to 1.
             List[Callable]: List of handlers
         """
 
-        return [self.command_handlers[type(command)]]
+        return [self.command_handlers[type(command)]]  # type: ignore
 
     def _get_event_handlers(self, event: events.Event) -> List[Callable]:
         """
@@ -137,7 +137,7 @@ to use for handling messages. Defaults to 1.
         Returns:
             List[Callable]: List of handlers
         """
-        return self.event_handlers[type(event)]
+        return self.event_handlers[type(event)]  # type: ignore
 
     def _try_process(self, func: Callable) -> Any:
         """

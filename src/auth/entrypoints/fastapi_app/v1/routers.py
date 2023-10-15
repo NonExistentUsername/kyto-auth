@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from entrypoints.fastapi_app.v1.users import router as users_router
+from auth.entrypoints.fastapi_app.v1.users import router as users_router
 
 """
 Here we will include all routers

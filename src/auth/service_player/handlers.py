@@ -1,11 +1,11 @@
 import logging
 import re
-from typing import Callable, Dict
+from typing import Callable, Dict, List
 
 from email_validator import validate_email as validate_email_format
 
-from domain import commands, events, users
-from service_player import exceptions, unit_of_work
+from auth.domain import commands, events, users
+from auth.service_player import exceptions, unit_of_work
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +127,7 @@ def create_user(
         return user
 
 
-EVENT_HANDLERS: Dict[events.Event, Callable] = {}
+EVENT_HANDLERS: Dict[events.Event, List[Callable]] = {}
 COMMAND_HANDLERS: Dict[commands.Command, Callable] = {
-    commands.CreateUser: create_user,
-}
+    commands.CreateUser: create_user,  # type: ignore
+}  # type: ignore
