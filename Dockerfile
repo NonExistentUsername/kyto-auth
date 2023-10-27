@@ -28,4 +28,4 @@ COPY --from=builder /app/dist/*.whl ./
 RUN pip install ./*.whl --no-cache-dir \
     && rm -rf /app/*.whl
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000",  "--workers", "1", "--threads", "1", "-k", "uvicorn.workers.UvicornWorker", "auth.entrypoints.fastapi_app.app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000",  "--workers", "1", "--threads", "1", "-k", "uvicorn.workers.UvicornWorker", "src.entrypoints.fastapi_app.app:app"]
