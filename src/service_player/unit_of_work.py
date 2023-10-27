@@ -6,7 +6,7 @@ from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Dict
 
 if TYPE_CHECKING:
-    from auth.adapters import repository
+    from src.adapters import repository
 
 logger = logging.getLogger(__name__)
 

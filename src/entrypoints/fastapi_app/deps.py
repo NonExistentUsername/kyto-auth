@@ -1,5 +1,5 @@
-from auth.factories import create_message_bus, create_uow
-from auth.service_player.messagebus import MessageBus
+from src.factories import create_message_bus, create_uow
+from src.service_player.messagebus import MessageBus
 
 message_bus = create_message_bus(create_uow("ram"))
 

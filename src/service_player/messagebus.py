@@ -4,8 +4,8 @@ import logging
 import multiprocessing.pool
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Union
 
-from auth.domain import commands, events
-from auth.service_player import exceptions
+from src.domain import commands, events
+from src.service_player import exceptions
 
 if TYPE_CHECKING:
     from . import unit_of_work

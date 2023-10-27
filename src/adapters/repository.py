@@ -4,7 +4,7 @@ import abc
 from copy import deepcopy
 from typing import Dict, Generic, List, Optional, TypeVar
 
-from auth.domain.base import BaseModel
+from src.domain.base import BaseModel
 
 _T = TypeVar("_T", bound=BaseModel)
 

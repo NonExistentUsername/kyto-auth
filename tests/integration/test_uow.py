@@ -2,8 +2,8 @@ import contextlib
 
 import pytest
 
-from auth.adapters import repository
-from auth.service_player import unit_of_work
+from src.adapters import repository
+from src.service_player import unit_of_work
 
 
 class SampleObject:

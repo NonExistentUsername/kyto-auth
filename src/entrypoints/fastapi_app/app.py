@@ -11,11 +11,11 @@ def create_app() -> FastAPI:
     """
     import logging
 
-    from auth.entrypoints.fastapi_app.exception_handlers import (
+    from src.entrypoints.fastapi_app.exception_handlers import (
         rewrite_404_exception,
         rewrite_500_exception,
     )
-    from auth.entrypoints.fastapi_app.v1.routers import router as api_v1_router
+    from src.entrypoints.fastapi_app.v1.routers import router as api_v1_router
 
     logging.basicConfig(level=logging.DEBUG)
 

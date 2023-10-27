@@ -4,8 +4,8 @@ from typing import Callable, Dict, List
 
 from email_validator import validate_email as validate_email_format
 
-from auth.domain import commands, events, users
-from auth.service_player import exceptions, unit_of_work
+from src.domain import commands, events, users
+from src.service_player import exceptions, unit_of_work
 
 logger = logging.getLogger(__name__)
 

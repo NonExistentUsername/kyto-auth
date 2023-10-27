@@ -1,9 +1,9 @@
 from typing import Callable, List
 
-from auth import di
-from auth.adapters import repository
-from auth.domain import commands, events
-from auth.service_player import handlers, messagebus, unit_of_work
+from src import di
+from src.adapters import repository
+from src.domain import commands, events
+from src.service_player import handlers, messagebus, unit_of_work
 
 
 def create_uow(uow_type: str) -> unit_of_work.AbstractUnitOfWork:

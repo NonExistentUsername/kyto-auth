@@ -2,10 +2,10 @@ from typing import TYPE_CHECKING, Any
 
 import bcrypt
 
-from auth.domain.base import BaseModel
+from src.domain.base import BaseModel
 
 if TYPE_CHECKING:
-    from auth.domain.events import Event
+    from src.domain.events import Event
 
 
 def _hash_password(password: str) -> str:
