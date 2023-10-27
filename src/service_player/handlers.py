@@ -62,18 +62,16 @@ def validate_password(password: str) -> None:
 
     if not any(char.isupper() for char in password):
         raise exceptions.InvalidPassword(
-            f"Password must contain at least one uppercase letter. Password: {password}"
+            f"Password must contain at least one uppercase letter."
         )
 
     if not any(char.islower() for char in password):
         raise exceptions.InvalidPassword(
-            f"Password must contain at least one lowercase letter. Password: {password}"
+            f"Password must contain at least one lowercase letter."
         )
 
     if not any(char.isdigit() for char in password):
-        raise exceptions.InvalidPassword(
-            f"Password must contain at least one number. Password: {password}"
-        )
+        raise exceptions.InvalidPassword(f"Password must contain at least one number.")
 
 
 def validate_email(email: str) -> None:
