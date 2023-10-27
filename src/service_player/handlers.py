@@ -125,7 +125,31 @@ def create_user(
         return user
 
 
+def login_user(
+    command: commands.LoginUser,
+    uow: unit_of_work.AbstractUnitOfWork,
+) -> users.User:
+    validate_username(command.username)
+    validate_password(command.password)
+
+    if not uow.users.get(username=command.username):
+        raise exceptions.UserNotFound(
+            f"User with username {command.username} not found"
+        )
+
+    with uow:
+        user: users.User = uow.users.get(username=command.username)
+
+        if not user.check_password(command.password):
+            raise exceptions.InvalidPassword(
+                f"Password is not valid for user with username {command.username}"
+            )
+
+        return user
+
+
 EVENT_HANDLERS: Dict[events.Event, List[Callable]] = {}
 COMMAND_HANDLERS: Dict[commands.Command, Callable] = {
     commands.CreateUser: create_user,  # type: ignore
+    commands.LoginUser: login_user,  # type: ignore
 }  # type: ignore

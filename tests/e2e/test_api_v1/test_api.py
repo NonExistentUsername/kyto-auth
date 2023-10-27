@@ -40,3 +40,32 @@ def test_create_user():
         password="",
     )
     assert_default_format(response)
+
+
+def test_login():
+    response = api_client.post_login(
+        username="",
+        password="",
+    )
+    assert_default_format(response)
+
+    assert response["status_code"] == 400
+    assert response["success"] is False
+
+    response = api_client.post_login(
+        username="testuser",
+        password="",
+    )
+    assert_default_format(response)
+
+    assert response["status_code"] == 400
+    assert response["success"] is False
+
+    response = api_client.post_login(
+        username="testuser",
+        password="testpassword",
+    )
+    assert_default_format(response)
+
+    assert response["status_code"] == 400
+    assert response["success"] is False

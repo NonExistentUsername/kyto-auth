@@ -18,12 +18,12 @@ from src.service_player import exceptions, messagebus
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/users",
-    tags=["users"],
+    prefix="",
+    tags=["main"],
 )
 
 
-@router.post("/", response_model=Response, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=Response, status_code=status.HTTP_201_CREATED)
 async def register(
     username: str,
     email: str,
@@ -64,6 +64,58 @@ async def register(
             exception=e,
         )
     except exceptions.InvalidEmail as e:
+        return responses.get_error_respose(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            exception=e,
+        )
+    except exceptions.InvalidPassword as e:
+        return responses.get_error_respose(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            exception=e,
+        )
+    except Exception as e:
+        logger.exception(e)
+        return JSONResponse(
+            content=InternalErrorResponse().model_dump(),
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+@router.post("/login", response_model=Response, status_code=status.HTTP_200_OK)
+async def login(
+    username: str,
+    password: str,
+    message_bus: Annotated[messagebus.MessageBus, Depends(get_message_bus)],
+) -> Union[JSONResponse, Response]:
+    """
+    Login endpoint
+
+    It will login user with username and password
+    """
+    try:
+        async_result: multiprocessing.pool.ApplyResult = message_bus.handle(
+            commands.LoginUser(username=username, password=password)
+        )
+        user: users.User = async_result.get()
+
+        return JSONResponse(
+            content=Response(
+                message="User logged in",
+                data={
+                    "id": user.id,
+                    "username": user.username,
+                },
+                status_code=status.HTTP_200_OK,
+                success=True,
+            ).model_dump(),
+            status_code=status.HTTP_200_OK,
+        )
+    except exceptions.UserNotFound as e:
+        return responses.get_error_respose(
+            status_code=status.HTTP_404_NOT_FOUND,
+            exception=e,
+        )
+    except exceptions.InvalidUsername as e:
         return responses.get_error_respose(
             status_code=status.HTTP_400_BAD_REQUEST,
             exception=e,

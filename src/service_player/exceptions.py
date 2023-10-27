@@ -36,3 +36,11 @@ class InvalidPassword(InternalException):
     """
 
     pass
+
+
+class UserNotFound(InternalException):
+    """
+    Raised when user not found.
+    """
+
+    pass

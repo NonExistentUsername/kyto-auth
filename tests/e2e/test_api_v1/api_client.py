@@ -14,10 +14,23 @@ def post_create_user(
     password: str,
 ) -> Dict:
     return _client.post(
-        f"{config.get_api_url()}/v1/users",
+        f"{config.get_api_url()}/v1/register",
         params={
             "username": username,
             "email": email,
+            "password": password,
+        },
+    ).json()
+
+
+def post_login(
+    username: str,
+    password: str,
+) -> Dict:
+    return _client.post(
+        f"{config.get_api_url()}/v1/login",
+        params={
+            "username": username,
             "password": password,
         },
     ).json()
