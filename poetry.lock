@@ -366,6 +366,17 @@ plugins = ["setuptools"]
 requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
+name = "kytool"
+version = "0.1.0"
+description = "Kytool is a tool for creatng"
+optional = false
+python-versions = ">=3.11,<4.0"
+files = [
+    {file = "kytool-0.1.0-py3-none-any.whl", hash = "sha256:8639d459cca410f151d82832b6219228b9f8e1b79db7d47e951ff95bcb6638e1"},
+    {file = "kytool-0.1.0.tar.gz", hash = "sha256:9ce7e59e04040fa1c2c467a123c0668341aef8b714c4c2eae72b2c03d526974c"},
+]
+
+[[package]]
 name = "mypy"
 version = "1.6.0"
 description = "Optional static typing for Python"
@@ -817,4 +828,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b7466992325548acbda1a5120f0af3a64f8c97bab7f5dbfecda94452ce6dfe2e"
+content-hash = "98c3a013c16d55cd8739deea5bec21c61a3a6c9ac265ade49907da6158dc8697"
