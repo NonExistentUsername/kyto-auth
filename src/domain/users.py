@@ -1,11 +1,10 @@
 from typing import TYPE_CHECKING, Any
 
 import bcrypt
-
-from src.domain.base import BaseModel
+from kytool.domain.base import BaseModel
 
 if TYPE_CHECKING:
-    from src.domain.events import Event
+    from kytool.domain.events import Event
 
 
 def _hash_password(password: str) -> str:

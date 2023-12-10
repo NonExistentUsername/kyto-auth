@@ -1,9 +1,4 @@
-class InternalException(Exception):
-    """
-    Base class for exceptions in this module.
-    """
-
-    pass
+from kytool.domain.exceptions import InternalException
 
 
 class UserAlreadyExists(InternalException):

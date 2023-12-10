@@ -1,8 +1,9 @@
 import logging
 import re
-from typing import Callable, Dict, List
+from typing import Optional
 
 from email_validator import validate_email as validate_email_format
+from kytool.service_player.handlers import register_handler
 
 from src.domain import commands, events, users
 from src.service_player import exceptions, unit_of_work
@@ -62,16 +63,16 @@ def validate_password(password: str) -> None:
 
     if not any(char.isupper() for char in password):
         raise exceptions.InvalidPassword(
-            f"Password must contain at least one uppercase letter."
+            "Password must contain at least one uppercase letter."
         )
 
     if not any(char.islower() for char in password):
         raise exceptions.InvalidPassword(
-            f"Password must contain at least one lowercase letter."
+            "Password must contain at least one lowercase letter."
         )
 
     if not any(char.isdigit() for char in password):
-        raise exceptions.InvalidPassword(f"Password must contain at least one number.")
+        raise exceptions.InvalidPassword("Password must contain at least one number.")
 
 
 def validate_email(email: str) -> None:
@@ -91,6 +92,7 @@ def validate_email(email: str) -> None:
         raise exceptions.InvalidEmail(f"Email is not valid. Email: {email}") from e
 
 
+@register_handler(commands.CreateUser)
 def create_user(
     command: commands.CreateUser,
     uow: unit_of_work.AbstractUnitOfWork,
@@ -125,6 +127,7 @@ def create_user(
         return user
 
 
+@register_handler(commands.LoginUser)
 def login_user(
     command: commands.LoginUser,
     uow: unit_of_work.AbstractUnitOfWork,
@@ -132,13 +135,13 @@ def login_user(
     validate_username(command.username)
     validate_password(command.password)
 
-    if not uow.users.get(username=command.username):
-        raise exceptions.UserNotFound(
-            f"User with username {command.username} not found"
-        )
-
     with uow:
-        user: users.User = uow.users.get(username=command.username)
+        user: Optional[users.User] = uow.users.get(username=command.username)  # type: ignore
+
+        if not user:
+            raise exceptions.UserNotFound(
+                f"User with username {command.username} not found"
+            )
 
         if not user.check_password(command.password):
             raise exceptions.InvalidPassword(
@@ -146,10 +149,3 @@ def login_user(
             )
 
         return user
-
-
-EVENT_HANDLERS: Dict[events.Event, List[Callable]] = {}
-COMMAND_HANDLERS: Dict[commands.Command, Callable] = {
-    commands.CreateUser: create_user,  # type: ignore
-    commands.LoginUser: login_user,  # type: ignore
-}  # type: ignore

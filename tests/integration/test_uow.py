@@ -1,8 +1,8 @@
 import contextlib
 
 import pytest
+from kytool.adapters import repository
 
-from src.adapters import repository
 from src.service_player import unit_of_work
 
 

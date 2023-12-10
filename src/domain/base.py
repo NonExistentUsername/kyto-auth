@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.domain.events import Event
+    from kytool.domain.events import Event
 
 
 class BaseModel:

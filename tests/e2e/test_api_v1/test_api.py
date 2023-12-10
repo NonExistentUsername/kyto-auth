@@ -43,29 +43,17 @@ def test_create_user():
 
 
 def test_login():
-    response = api_client.post_login(
-        username="",
-        password="",
-    )
-    assert_default_format(response)
+    response = _extracted_from_test_login_2("", "")
+    response = _extracted_from_test_login_2("testuser", "")
+    response = _extracted_from_test_login_2("testuser", "testpassword")
 
-    assert response["status_code"] == 400
-    assert response["success"] is False
 
-    response = api_client.post_login(
-        username="testuser",
-        password="",
-    )
-    assert_default_format(response)
+# TODO Rename this here and in `test_login`
+def _extracted_from_test_login_2(username, password):
+    result = api_client.post_login(username=username, password=password)
+    assert_default_format(result)
 
-    assert response["status_code"] == 400
-    assert response["success"] is False
+    assert result["status_code"] == 400
+    assert result["success"] is False
 
-    response = api_client.post_login(
-        username="testuser",
-        password="testpassword",
-    )
-    assert_default_format(response)
-
-    assert response["status_code"] == 400
-    assert response["success"] is False
+    return result

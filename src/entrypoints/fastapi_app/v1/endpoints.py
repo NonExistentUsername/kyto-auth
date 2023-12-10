@@ -4,6 +4,7 @@ from typing import Annotated, Union
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
+from kytool.service_player import messagebus
 
 from src.domain import commands, users
 from src.entrypoints.fastapi_app import responses
@@ -13,7 +14,7 @@ from src.entrypoints.fastapi_app.responses import (
     InternalErrorResponse,
     Response,
 )
-from src.service_player import exceptions, messagebus
+from src.service_player import exceptions
 
 logger = logging.getLogger(__name__)
 
