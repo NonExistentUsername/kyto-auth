@@ -27,16 +27,11 @@ def validate_username(username: str) -> None:
     if not username:
         raise exceptions.InvalidUsername("Username cannot be empty")
 
-    if not 3 <= len(username) <= 32:
-        raise exceptions.InvalidUsername(
-            f"Username must be between 3 and 32 characters. Username length: {len(username)}"
-        )
-
-    regex = r"^[a-zA-Z0-9_]+$"
+    regex = r"^[a-zA-Z0-9_]{3,32}+$"
 
     if not re.match(regex, username):
         raise exceptions.InvalidUsername(
-            f"Username can contain only alphanumeric characters and underscore (^a-zA-Z0-9_+$). Username: {username}"
+            "Username can contain only alphanumeric characters, underscore and must be between 3 and 32 characters."
         )
 
 
