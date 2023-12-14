@@ -2,13 +2,14 @@ import logging
 import re
 from typing import Optional
 
-from email_validator import validate_email as validate_email_format
 from kytool.service_player.handlers import register_handler
 
 from src.domain import commands, events, users
 from src.service_player import exceptions, unit_of_work
 
 logger = logging.getLogger(__name__)
+
+EMAIL_REGEX = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
 
 
 def validate_username(username: str) -> None:
@@ -86,10 +87,8 @@ def validate_email(email: str) -> None:
     if not email:
         raise exceptions.InvalidEmail("Email cannot be empty")
 
-    try:
-        _ = validate_email_format(email)
-    except Exception as e:
-        raise exceptions.InvalidEmail(f"Email is not valid. Email: {email}") from e
+    if not re.match(EMAIL_REGEX, email):
+        raise exceptions.InvalidEmail(f"Email is not valid. Email: {email}")
 
 
 @register_handler(commands.CreateUser)
