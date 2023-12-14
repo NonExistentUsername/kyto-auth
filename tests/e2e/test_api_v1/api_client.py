@@ -15,7 +15,7 @@ def post_create_user(
 ) -> Dict:
     return _client.post(
         f"{config.get_api_url()}/v1/register",
-        params={
+        json={
             "username": username,
             "email": email,
             "password": password,

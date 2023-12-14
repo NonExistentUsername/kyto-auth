@@ -14,6 +14,7 @@ from src.entrypoints.fastapi_app.responses import (
     InternalErrorResponse,
     Response,
 )
+from src.entrypoints.fastapi_app.v1 import models
 from src.service_player import exceptions
 
 logger = logging.getLogger(__name__)
@@ -26,9 +27,7 @@ router = APIRouter(
 
 @router.post("/register", response_model=Response, status_code=status.HTTP_201_CREATED)
 async def register(
-    username: str,
-    email: str,
-    password: str,
+    register: models.Register,
     message_bus: Annotated[messagebus.MessageBus, Depends(get_message_bus)],
 ) -> Union[JSONResponse, Response]:
     """
@@ -38,7 +37,11 @@ async def register(
     """
     try:
         async_result: multiprocessing.pool.ApplyResult = message_bus.handle(
-            commands.CreateUser(username=username, email=email, password=password)
+            commands.CreateUser(
+                username=register.username,
+                email=register.email,
+                password=register.password,
+            )
         )
         user: users.User = async_result.get()
 
