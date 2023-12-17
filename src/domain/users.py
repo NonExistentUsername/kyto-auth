@@ -1,4 +1,3 @@
-# import bcrypt
 import hashlib
 from typing import TYPE_CHECKING, Any
 
@@ -9,12 +8,10 @@ if TYPE_CHECKING:
 
 
 def _hash_password(password: str) -> str:
-    # return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     return hashlib.sha512(password.encode(), usedforsecurity=True).hexdigest()
 
 
 def _check_password(password: str, hashed_password: str) -> bool:
-    # return bcrypt.checkpw(password.encode(), hashed_password.encode())
     return (
         hashlib.sha512(password.encode(), usedforsecurity=True).hexdigest()
         == hashed_password
