@@ -116,8 +116,6 @@ def create_user(
         uow.users.add(user)
         uow.commit()
 
-        print(uow.users)
-
         return user
 
 
