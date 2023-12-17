@@ -49,26 +49,13 @@ def validate_password(password: str) -> None:
         password (str): Password to validate
     """
 
-    if not password:
-        raise exceptions.InvalidPassword("Password cannot be empty")
+    # Create regex that will match docs
+    regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,32}$"
 
-    if not 8 <= len(password) <= 32:
+    if not re.match(regex, password):
         raise exceptions.InvalidPassword(
-            f"Password must be between 8 and 32 characters. Password length: {len(password)}"
+            "Password must be between 8 and 32 characters and contain at least one uppercase letter, one lowercase letter and one number."
         )
-
-    if not any(char.isupper() for char in password):
-        raise exceptions.InvalidPassword(
-            "Password must contain at least one uppercase letter."
-        )
-
-    if not any(char.islower() for char in password):
-        raise exceptions.InvalidPassword(
-            "Password must contain at least one lowercase letter."
-        )
-
-    if not any(char.isdigit() for char in password):
-        raise exceptions.InvalidPassword("Password must contain at least one number.")
 
 
 def validate_email(email: str) -> None:
