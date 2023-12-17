@@ -333,13 +333,13 @@ requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "kytool"
-version = "0.1.0"
+version = "0.2.0"
 description = "Kytool is a tool for creatng"
 optional = false
 python-versions = ">=3.11,<4.0"
 files = [
-    {file = "kytool-0.1.0-py3-none-any.whl", hash = "sha256:8639d459cca410f151d82832b6219228b9f8e1b79db7d47e951ff95bcb6638e1"},
-    {file = "kytool-0.1.0.tar.gz", hash = "sha256:9ce7e59e04040fa1c2c467a123c0668341aef8b714c4c2eae72b2c03d526974c"},
+    {file = "kytool-0.2.0-py3-none-any.whl", hash = "sha256:5fe100fe4e9dfb1eb24d9e10a6be5a7efdbe7ff84a949f9353703cf1b6090366"},
+    {file = "kytool-0.2.0.tar.gz", hash = "sha256:64e32018e59cba9ebf3816e76ae3903bea5bd9040be724b28de3b670ea4c0c30"},
 ]
 
 [[package]]
@@ -794,4 +794,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ae3a8d137ef0af3e10bb8ab57dc69b7620e295e0c6459333f3697fc762ebd4a8"
+content-hash = "404d86ab9bef5a66f139b804afb991fcb0fb17ec6c7f222954b60066e5261524"

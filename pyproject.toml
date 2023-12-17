@@ -14,7 +14,7 @@ fastapi = "^0.103.2"
 uvicorn = {extras = ["standart"], version = "^0.23.2"}
 gunicorn = "^21.2.0"
 bcrypt = "^4.0.1"
-kytool = "^0.1.0"
+kytool = "^0.2.0"
 
 [tool.isort]
 profile = "black"
