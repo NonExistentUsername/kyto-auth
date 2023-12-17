@@ -9,7 +9,9 @@ from src.service_player import exceptions, unit_of_work
 
 logger = logging.getLogger(__name__)
 
-EMAIL_REGEX = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+EMAIL_REGEX = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b")
+USERNAME_REGEX = re.compile(r"^[a-zA-Z0-9_]{3,32}+$")
+PASSWORD_REGEX = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,32}$")
 
 
 def validate_username(username: str) -> None:
@@ -24,12 +26,7 @@ def validate_username(username: str) -> None:
         username (str): Username to validate
     """
 
-    if not username:
-        raise exceptions.InvalidUsername("Username cannot be empty")
-
-    regex = r"^[a-zA-Z0-9_]{3,32}+$"
-
-    if not re.match(regex, username):
+    if not re.match(USERNAME_REGEX, username):
         raise exceptions.InvalidUsername(
             "Username can contain only alphanumeric characters, underscore and must be between 3 and 32 characters."
         )
@@ -49,10 +46,7 @@ def validate_password(password: str) -> None:
         password (str): Password to validate
     """
 
-    # Create regex that will match docs
-    regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,32}$"
-
-    if not re.match(regex, password):
+    if not re.match(PASSWORD_REGEX, password):
         raise exceptions.InvalidPassword(
             "Password must be between 8 and 32 characters and contain at least one uppercase letter, one lowercase letter and one number."
         )
@@ -71,6 +65,28 @@ def validate_email(email: str) -> None:
 
     if not re.match(EMAIL_REGEX, email):
         raise exceptions.InvalidEmail(f"Email is not valid. Email: {email}")
+
+
+@register_handler(commands.CanCreateUser)
+def can_create_user(
+    command: commands.CanCreateUser,
+    uow: unit_of_work.AbstractUnitOfWork,
+) -> bool:
+    validate_username(command.username)
+    validate_password(command.password)
+    validate_email(command.email)
+
+    if uow.users.get(username=command.username):
+        raise exceptions.UserAlreadyExists(
+            f"User with username {command.username} already exists"
+        )
+
+    if uow.users.get(email=command.email):
+        raise exceptions.UserAlreadyExists(
+            f"User with email {command.email} already exists"
+        )
+
+    return True
 
 
 @register_handler(commands.CreateUser)

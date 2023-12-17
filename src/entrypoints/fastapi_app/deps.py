@@ -11,7 +11,7 @@ message_bus = create_message_bus(
     unit_of_work.InMemoryUnitOfWork(
         repository.InMemoryRepository(query_fields=["id", "username", "email"])
     ),
-    background_threads=2,
+    background_threads=4,
 )
 
 

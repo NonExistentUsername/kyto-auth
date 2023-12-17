@@ -36,22 +36,27 @@ async def register(
     It will create user with username, password and email
     """
     try:
-        async_result: multiprocessing.pool.ApplyResult = message_bus.handle(
-            commands.CreateUser(
+        result: bool = message_bus.handle(
+            commands.CanCreateUser(
                 username=register.username,
                 email=register.email,
                 password=register.password,
             )
         )
-        user: users.User = async_result.get()
+        if result:
+            message_bus.handle(
+                commands.CreateUser(
+                    username=register.username,
+                    email=register.email,
+                    password=register.password,
+                ),
+                force_background=True,
+            )
 
         return JSONResponse(
             content=Response(
                 message="User created",
-                data={
-                    "id": user.id,
-                    "username": user.username,
-                },
+                data={},
                 status_code=status.HTTP_201_CREATED,
                 success=True,
             ).model_dump(),
