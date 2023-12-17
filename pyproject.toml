@@ -13,7 +13,7 @@ python = "^3.11"
 fastapi = "^0.103.2"
 uvicorn = {extras = ["standart"], version = "^0.23.2"}
 gunicorn = "^21.2.0"
-kytool = "^0.2.0"
+kytool = "^0.2.2"
 
 [tool.isort]
 profile = "black"
